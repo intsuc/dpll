@@ -10,4 +10,4 @@ object Symbol:
 
   def fresh(name: String): Symbol = Symbol(name, id.getAndIncrement())
 
-  def fresh(): Symbol = Symbol("", id.getAndIncrement())
+  def fresh(): Symbol = Symbol.fresh("")

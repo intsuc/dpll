@@ -6,9 +6,11 @@ enum Formula:
   case And(f1: Formula, f2: Formula)
   case Or(f1: Formula, f2: Formula)
 
-  def ∧(f2: Formula) = And(this, f2)
+  def unary_! = Not(this)
 
-  def ∨(f2: Formula) = Or(this, f2)
+  def &&(f2: Formula) = And(this, f2)
+
+  def ||(f2: Formula) = Or(this, f2)
 
   override def toString: String = this match
     case Var(x1)     => s"$x1"
@@ -16,12 +18,4 @@ enum Formula:
     case And(f1, f2) => s"($f1 ∧ $f2)"
     case Or(f1, f2)  => s"($f1 ∨ $f2)"
 
-import Formula.*
-
-object $ :
-  def apply(x1: String) = Var(Symbol.fresh(x1))
-
-  def apply(x1: Symbol) = Var(x1)
-
-object ¬ :
-  def apply(f1: Formula) = Not(f1)
+extension (x1: Symbol) def unary_~ = Formula.Var(x1)

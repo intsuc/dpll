@@ -12,26 +12,26 @@ def tseitin(formula: Formula): Formula =
       Seq.empty
     case LabeledFormula.Not(label, f1) =>
       Seq(
-        $(label) ∨ $(f1.label),
-        ¬($(label)) ∨ ¬($(f1.label))
+        ~label || ~f1.label,
+        !(~label) || !(~f1.label)
       )
         ++ disjunctions(f1)
     case LabeledFormula.And(label, f1, f2) =>
       Seq(
-        ¬($(label)) ∨ $(f1.label),
-        ¬($(label)) ∨ $(f2.label),
-        $(label) ∨ ¬($(f1.label)) ∨ ¬($(f2.label))
+        !(~label) || ~f1.label,
+        !(~label) || ~f2.label,
+        ~label || !(~f1.label) || !(~f2.label)
       )
         ++ disjunctions(f1)
         ++ disjunctions(f2)
     case LabeledFormula.Or(label, f1, f2) =>
       Seq(
-        $(label) ∨ ¬($(f1.label)),
-        $(label) ∨ ¬($(f2.label)),
-        ¬($(label)) ∨ $(f1.label) ∨ $(f2.label)
+        ~label || !(~f1.label),
+        ~label || !(~f2.label),
+        !(~label) || ~f1.label || ~f2.label
       )
         ++ disjunctions(f1)
         ++ disjunctions(f2)
 
   val root = labeled(formula)
-  disjunctions(root).foldLeft($(root.label))(Formula.And(_, _))
+  disjunctions(root).foldLeft(~root.label)(_ && _)

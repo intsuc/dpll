@@ -19,3 +19,5 @@ enum Formula:
     case Or(f1, f2)  => s"($f1 ∨ $f2)"
 
 extension (x1: Symbol) def unary_~ = Formula.Var(x1)
+
+extension (x1: String) def unary_~ = Formula.Var(Symbol.fresh(x1))
